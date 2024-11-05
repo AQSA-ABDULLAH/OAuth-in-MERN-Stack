@@ -8,32 +8,38 @@ function Signup() {
     const [signupInfo, setSignupInfo] = useState({
         name: '',
         email: '',
-        password: ''
-    })
+        password: '',
+        confirmPassword: ''  // Added confirmPassword
+    });
 
     const navigate = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(name, value);
         const copySignupInfo = { ...signupInfo };
         copySignupInfo[name] = value;
         setSignupInfo(copySignupInfo);
-    }
+    };
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        const { name, email, password } = signupInfo;
-        if (!name || !email || !password) {
-            return handleError('name, email and password are required')
+        const { name, email, password, confirmPassword } = signupInfo;
+        
+        // Validation for empty fields and password match
+        if (!name || !email || !password || !confirmPassword) {
+            return handleError('All fields are required');
         }
+        if (password !== confirmPassword) {
+            return handleError('Passwords do not match');
+        }
+
         try {
-            const url = `https://deploy-mern-app-1-api.vercel.app/auth/signup`;
+            const url = "http://localhost:8000/api/user/signup";
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(signupInfo)
+                body: JSON.stringify({ name, email, password })
             });
             const result = await response.json();
             const { success, message, error } = result;
@@ -48,11 +54,11 @@ function Signup() {
             } else if (!success) {
                 handleError(message);
             }
-            console.log(result);
         } catch (err) {
             handleError(err);
         }
-    }
+    };
+
     return (
         <div className='container'>
             <h1>Signup</h1>
@@ -88,6 +94,16 @@ function Signup() {
                         value={signupInfo.password}
                     />
                 </div>
+                <div>
+                    <label htmlFor='confirmPassword'>Confirm Password</label>
+                    <input
+                        onChange={handleChange}
+                        type='password'
+                        name='confirmPassword'
+                        placeholder='Confirm your password...'
+                        value={signupInfo.confirmPassword}
+                    />
+                </div>
                 <button type='submit'>Signup</button>
                 <span>Already have an account ?
                     <Link to="/login">Login</Link>
@@ -98,4 +114,4 @@ function Signup() {
     )
 }
 
-export default Signup
+export default Signup;
