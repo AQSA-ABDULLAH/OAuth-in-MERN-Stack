@@ -6,7 +6,7 @@ const usersSchema = new mongoose.Schema({
     password: { type: String, trim: true },
     is_verified: { type: Boolean, default: false },
     otp: {
-        type: Number,
+        type: String,
         required: true
     },
     tokens: [{

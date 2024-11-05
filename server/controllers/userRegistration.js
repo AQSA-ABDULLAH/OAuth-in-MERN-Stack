@@ -91,6 +91,6 @@ class UserRegistration {
     }
 }
 
-module.exports = UserRegistration; // Export the class directly
+module.exports = UserRegistration;
 
 
