@@ -1,23 +1,19 @@
-const User = require("../models/Users.js"); // Ensure User model is imported
-const { hashPassword } = require("../helpers/hashPassword.js");
-const { createToken } = require("../helpers/jwt.js");
-const compileEmailTemplate = require("../helpers/compile-email-template.js");
-const mailer = require("../libs/mailer.js");
+const User = require("../models/Users");
+const { hashPassword } = require("../helpers/hashPassword");
+const { createToken } = require("../helpers/jwt");
+const compileEmailTemplate = require("../helpers/compile-email-template");
+const mailer = require("../libs/mailer");
 
 class UserRegistration {
-    // OTP GENERATION
+    // OTP Generation
     static async generateOTP() {
         return Math.floor(1000 + Math.random() * 9000);
     }
 
-    // USER REGISTRATION
+    // User Registration
     static userRegistration = async (req, res) => {
         try {
             const { userName, email, password, confirmPassword } = req.body;
-
-            if (!email || !password || !confirmPassword) {
-                return res.status(400).json({ error: "Please fill in all fields properly" });
-            }
 
             const userExist = await User.findOne({ email });
             if (userExist) {
@@ -28,17 +24,12 @@ class UserRegistration {
                 return res.status(400).json({ error: "Password and Confirm Password don't match" });
             }
 
-            // Generate OTP
             const OTP = await UserRegistration.generateOTP();
-
-            // Hashing Password
             const hashedPassword = await hashPassword(password);
-
             const user = new User({ userName, email, password: hashedPassword, otp: OTP });
 
             const savedUser = await user.save();
 
-            // Send Registration mail to user with OTP
             const template = await compileEmailTemplate({
                 fileName: "register.mjml",
                 data: { email, OTP },
@@ -61,7 +52,6 @@ class UserRegistration {
         }
     };
 
-    // VERIFY OTP
     static async verifyOTP(req, res) {
         try {
             const { email, otp } = req.body;
@@ -79,7 +69,6 @@ class UserRegistration {
                 return res.status(400).json({ status: "error", message: "Incorrect OTP." });
             }
 
-            // Update user's is_verified status
             user.is_verified = true;
             await user.save();
 
@@ -92,5 +81,6 @@ class UserRegistration {
 }
 
 module.exports = UserRegistration;
+
 
 
