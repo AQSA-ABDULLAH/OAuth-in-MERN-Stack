@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const app = express();
 
 // Enable CORS for all routes and origins
@@ -12,16 +12,13 @@ app.use(cors());
 app.use(express.json());
 
 // Connection to MongoDB
-require('./db/connection.js');
+require('./db/connection');
 
 // Routes
-const userRoutes = require('./routes/users.js');
+const userRoutes = require('./routes/users');
 
 // Load Routes
 app.use('/api/user', userRoutes);
-
-// Connection to MongoDB
-require('./db/connection.js');
 
 // Define a simple route
 app.get("/", (req, res) => {

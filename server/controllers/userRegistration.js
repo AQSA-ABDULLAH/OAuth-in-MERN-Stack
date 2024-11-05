@@ -1,11 +1,10 @@
-const User = require("../models/Users.js");
+const User = require("../models/Users.js"); // Ensure User model is imported
 const { hashPassword } = require("../helpers/hashPassword.js");
 const { createToken } = require("../helpers/jwt.js");
 const compileEmailTemplate = require("../helpers/compile-email-template.js");
 const mailer = require("../libs/mailer.js");
 
 class UserRegistration {
-
     // OTP GENERATION
     static async generateOTP() {
         return Math.floor(1000 + Math.random() * 9000);
@@ -14,25 +13,13 @@ class UserRegistration {
     // USER REGISTRATION
     static userRegistration = async (req, res) => {
         try {
-            const {
-                userName,
-                firstName,
-                lastName,
-                middleName,
-                email,
-                phoneNumber,
-                password,
-                confirmPassword,
-                country,
-                status,
-                profilePicture,
-            } = req.body;
+            const { userName, email, password, confirmPassword } = req.body;
 
-            if (!email || !password || !confirmPassword || !country) {
+            if (!email || !password || !confirmPassword) {
                 return res.status(400).json({ error: "Please fill in all fields properly" });
             }
 
-            const userExist = await User.findOne({ email: email });
+            const userExist = await User.findOne({ email });
             if (userExist) {
                 return res.status(400).json({ error: "User already exists" });
             }
@@ -42,24 +29,12 @@ class UserRegistration {
             }
 
             // Generate OTP
-            const OTP = await UserController.generateOTP();
+            const OTP = await UserRegistration.generateOTP();
 
             // Hashing Password
             const hashedPassword = await hashPassword(password);
 
-            const user = new User({
-                userName,
-                firstName,
-                lastName,
-                middleName,
-                email,
-                phoneNumber,
-                password: hashedPassword,
-                country,
-                status,
-                profilePicture,
-                otp: OTP
-            });
+            const user = new User({ userName, email, password: hashedPassword, otp: OTP });
 
             const savedUser = await user.save();
 
@@ -116,4 +91,6 @@ class UserRegistration {
     }
 }
 
-module.exports = { UserRegistration };
+module.exports = UserRegistration; // Export the class directly
+
+
