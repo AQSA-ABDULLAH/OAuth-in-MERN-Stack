@@ -1,6 +1,6 @@
-const User = require("../../models/Users");
-const { createToken } = require("../../helpers/jwt");
-const { passwordCompare } = require("../../helpers/hashPassword");
+const User = require("../models/Users");
+const { createToken } = require("../helpers/jwt");
+const { passwordCompare } = require("../helpers/hashPassword");
 
 const userLogin = async (req, res) => {
     try {

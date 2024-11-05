@@ -1,14 +1,14 @@
 const User = require("../models/Users.js");
-const { hashPassword } = require("../../helpers/hashPassword");
-const { createToken } = require("../../helpers/jwt");
-const compileEmailTemplate = require("../../helpers/compile-email-template.js");
-const mailer = require("../../libs/mailer.js");
+const { hashPassword } = require("../helpers/hashPassword.js");
+const { createToken } = require("../helpers/jwt.js");
+const compileEmailTemplate = require("../helpers/compile-email-template.js");
+const mailer = require("../libs/mailer.js");
 
 class UserRegistration {
 
     // OTP GENERATION
     static async generateOTP() {
-        return Math.floor(1000 + Math.random() * 9000); // 6-digit OTP
+        return Math.floor(1000 + Math.random() * 9000);
     }
 
     // USER REGISTRATION
