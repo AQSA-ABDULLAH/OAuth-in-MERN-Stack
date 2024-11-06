@@ -6,11 +6,8 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // CORS setup for frontend URL
-app.use(cors({
-    origin: 'https://o-auth-in-mern-stack-evz4-rfschos6n-aqsa-abdullahs-projects.vercel.app',  // Frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true  // Allow credentials (cookies, headers)
-}));
+app.options('*', cors());
+
 
 // Middleware to parse JSON bodies
 app.use(express.json());
