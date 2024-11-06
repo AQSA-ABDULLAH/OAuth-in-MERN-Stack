@@ -5,7 +5,11 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // CORS setup for frontend URL
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all origins or specify the frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
