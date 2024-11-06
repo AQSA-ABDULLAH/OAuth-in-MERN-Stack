@@ -30,15 +30,10 @@ function Login() {
         }
     
         try {
-            // Use withCredentials for handling cookies or auth tokens
-            const response = await axios.post(
-                "https://o-auth-in-mern-stack.vercel.app/api/user/login", 
-                { email, password },
-                { withCredentials: true }  // Ensure that credentials like cookies are sent
-            );
-    
+            const response = await axios.post("https://o-auth-in-mern-stack-qdbhh9grm-aqsa-abdullahs-projects.vercel.app/", { email, password });
+
             const { status, message, token, error } = response.data;
-    
+
             if (status === 'success') {
                 console.log('Token:', token);
                 handleSuccess(message);
@@ -52,20 +47,23 @@ function Login() {
                 handleError(message);
             }
         } catch (err) {
+            // Handle different error scenarios
             if (err.response) {
+                // Server responded with an error status
                 if (err.response.status === 404) {
                     handleError('API endpoint not found (404). Please check the URL.');
                 } else {
                     handleError(err.response.data.message || 'An error occurred');
                 }
             } else if (err.request) {
+                // No response was received
                 handleError('No response from server. Please check your network or server status.');
             } else {
+                // Any other errors during request setup
                 handleError('Failed to log in');
             }
         }
     };
-        
 
     return (
         <div className='container'>
