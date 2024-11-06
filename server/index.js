@@ -42,7 +42,7 @@ app.use('/api/user', userRoutes);
 
 // Define a simple route
 app.get("/", (req, res) => {
-    res.send("Welcome to my World!");
+    res.send("Welcome to drak!");
 });
 
 // Start the server
