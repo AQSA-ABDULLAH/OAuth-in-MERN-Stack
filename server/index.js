@@ -2,13 +2,13 @@ const express = require("express");
 require("dotenv").config();
 
 const port = process.env.PORT || 3000;
+const frontend_url = process.env.FRONTEND_URL
 const app = express();
 
 // CORS setup for frontend URL
 app.use(cors({
-    origin: '*', // Allow all origins or specify the frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: "https://o-auth-in-mern-stack-frontend-78x.vercel.app/login",
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
   }));
 
 // Middleware to parse JSON bodies
