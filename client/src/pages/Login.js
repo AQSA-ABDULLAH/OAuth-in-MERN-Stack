@@ -5,7 +5,6 @@ import { handleError, handleSuccess } from '../utils';
 import axios from 'axios';
 
 function Login() {
-    const url = process.env.REACT_APP_WEBSITE_URL; // This will get the value from the .env file
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',
@@ -31,11 +30,14 @@ function Login() {
         }
     
         try {
-            // Use the URL from the .env file
-            const response = await axios.post("https://o-auth-in-mern-stack-9rwm.vercel.app/api/user/login", { email, password });
-
+            const response = await axios.post(
+                "https://o-auth-in-mern-stack-9rwm.vercel.app/api/user/login", 
+                { email, password },
+                { withCredentials: true }  // Important for sending cookies or authentication headers
+            );
+    
             const { status, message, token, error } = response.data;
-
+    
             if (status === 'success') {
                 console.log('Token:', token);
                 handleSuccess(message);
@@ -49,23 +51,19 @@ function Login() {
                 handleError(message);
             }
         } catch (err) {
-            // Handle different error scenarios
             if (err.response) {
-                // Server responded with an error status
                 if (err.response.status === 404) {
                     handleError('API endpoint not found (404). Please check the URL.');
                 } else {
                     handleError(err.response.data.message || 'An error occurred');
                 }
             } else if (err.request) {
-                // No response was received
                 handleError('No response from server. Please check your network or server status.');
             } else {
-                // Any other errors during request setup
                 handleError('Failed to log in');
             }
         }
-    };
+    };    
 
     return (
         <div className='container'>

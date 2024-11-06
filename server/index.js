@@ -7,8 +7,11 @@ const app = express();
 
 // Enable CORS for all routes and origins
 app.use(cors({
-    origin: 'https://o-auth-in-mern-stack-evz4-rfschos6n-aqsa-abdullahs-projects.vercel.app'
-}));
+    origin: 'https://o-auth-in-mern-stack-evz4-rfschos6n-aqsa-abdullahs-projects.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,  // If you're using cookies or authentication headers
+  }));
+  
 
 // Middleware to parse JSON bodies
 app.use(express.json());
