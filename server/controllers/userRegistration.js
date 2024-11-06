@@ -14,7 +14,7 @@ class UserRegistration {
     static userRegistration = async (req, res) => {
         try {
             const { userName, email, password, confirmPassword } = req.body;
-
+            console.log(req.body);
             const userExist = await User.findOne({ email });
             if (userExist) {
                 return res.status(400).json({ error: "User already exists" });

@@ -2,14 +2,16 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
+import axios from 'axios';
+
 
 function Signup() {
 
     const [signupInfo, setSignupInfo] = useState({
-        name: '',
+        userName: '',
         email: '',
         password: '',
-        confirmPassword: ''  // Added confirmPassword
+        confirmPassword: ''  
     });
 
     const navigate = useNavigate();
@@ -22,42 +24,37 @@ function Signup() {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        const { name, email, password, confirmPassword } = signupInfo;
+        const { userName, email, password, confirmPassword } = signupInfo;
         
         // Validation for empty fields and password match
-        if (!name || !email || !password || !confirmPassword) {
+        if (!userName || !email || !password || !confirmPassword) {
             return handleError('All fields are required');
         }
         if (password !== confirmPassword) {
             return handleError('Passwords do not match');
         }
-
+    
         try {
-            const url = "http://localhost:8000/api/user/signup";
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name, email, password })
-            });
-            const result = await response.json();
-            const { success, message, error } = result;
+            const response = await axios.post("http://localhost:8000/api/user/signup", { userName, email, password, confirmPassword });
+            console.log (response)
+            const { success, message, error } = response.data;
+            
             if (success) {
                 handleSuccess(message);
                 setTimeout(() => {
-                    navigate('/login')
-                }, 1000)
+                    navigate('/login');
+                }, 1000);
             } else if (error) {
-                const details = error?.details[0].message;
-                handleError(details);
-            } else if (!success) {
+                handleError(error.details?.[0]?.message || "Signup error");
+            } else {
                 handleError(message);
             }
         } catch (err) {
-            handleError(err);
+            handleError("An error occurred during signup");
+            console.error("Error during signup:", err);
         }
     };
+    
 
     return (
         <div className='container'>
@@ -68,7 +65,7 @@ function Signup() {
                     <input
                         onChange={handleChange}
                         type='text'
-                        name='name'
+                        name='userName'
                         autoFocus
                         placeholder='Enter your name...'
                         value={signupInfo.name}

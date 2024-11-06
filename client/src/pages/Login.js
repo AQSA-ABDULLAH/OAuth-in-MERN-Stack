@@ -27,14 +27,9 @@ function Login() {
             return handleError('email and password are required')
         }
         try {
-            const url = `https://deploy-mern-app-1-api.vercel.app/auth/login`;
-            const response = await fetch(url, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(loginInfo)
-            });
+            const response = await axios.post("http://localhost:8000/api/user/signup", { email, password });
+            console.log (response)
+
             const result = await response.json();
             const { success, message, jwtToken, name, error } = result;
             if (success) {

@@ -2,7 +2,7 @@ const express = require('express');
 const { userRegistration, verifyOTP } = require('../controllers/userRegistration');
 const { userLogin } = require('../controllers/userLogin');
 const { signupValidation, loginValidation } = require('../middlewares/AuthValidations');
-const ForgetPassword = require("../../models/ForgetPassword.js");
+// const ForgetPassword = require("../../models/ForgetPassword.js");
 const router = express.Router();
 
 router.post('/signup', signupValidation, userRegistration);
