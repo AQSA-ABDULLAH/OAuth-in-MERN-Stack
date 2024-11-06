@@ -32,7 +32,7 @@ function Login() {
         try {
             // Use withCredentials for handling cookies or auth tokens
             const response = await axios.post(
-                "https://o-auth-in-mern-stack-9rwm.vercel.app/api/user/login", 
+                "https://o-auth-in-mern-stack.vercel.app/api/user/login", 
                 { email, password },
                 { withCredentials: true }  // Ensure that credentials like cookies are sent
             );

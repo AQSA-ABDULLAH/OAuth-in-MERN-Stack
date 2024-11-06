@@ -35,7 +35,7 @@ function Signup() {
         }
     
         try {
-            const response = await axios.post("https://o-auth-in-mern-stack-9rwm.vercel.app/api/user/signup", { userName, email, password, confirmPassword });
+            const response = await axios.post("https://o-auth-in-mern-stack.vercel.app/api/user/signup", { userName, email, password, confirmPassword });
             console.log (response)
             const { success, message, error } = response.data;
             
