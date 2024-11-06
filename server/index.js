@@ -5,25 +5,25 @@ require("dotenv").config();
 const port = process.env.PORT || 3000;
 const app = express();
 
-// Enable CORS for all routes and origins
+// CORS setup for frontend URL
 app.use(cors({
-    origin: 'https://o-auth-in-mern-stack-evz4-rfschos6n-aqsa-abdullahs-projects.vercel.app',
+    origin: 'https://o-auth-in-mern-stack-evz4-rfschos6n-aqsa-abdullahs-projects.vercel.app',  // Frontend URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,  // If you're using cookies or authentication headers
-  }));
-  
+    credentials: true  // Allow credentials (cookies, headers)
+}));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Connection to MongoDB
+// Database connection (if necessary)
 require('./db/connection');
 
 // Routes
 const userRoutes = require('./routes/users');
-
-// Load Routes
 app.use('/api/user', userRoutes);
+
+// Preflight request handling (for CORS)
+app.options('*', cors());
 
 // Define a simple route
 app.get("/", (req, res) => {

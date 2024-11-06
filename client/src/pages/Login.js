@@ -30,10 +30,11 @@ function Login() {
         }
     
         try {
+            // Use withCredentials for handling cookies or auth tokens
             const response = await axios.post(
                 "https://o-auth-in-mern-stack-9rwm.vercel.app/api/user/login", 
                 { email, password },
-                { withCredentials: true }  // Important for sending cookies or authentication headers
+                { withCredentials: true }  // Ensure that credentials like cookies are sent
             );
     
             const { status, message, token, error } = response.data;
@@ -63,7 +64,8 @@ function Login() {
                 handleError('Failed to log in');
             }
         }
-    };    
+    };
+        
 
     return (
         <div className='container'>
