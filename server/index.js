@@ -6,21 +6,22 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // CORS setup for frontend URL
-app.use(cors({
-    origin: (origin, callback) => {
-        const allowedOrigins = [
-            'https://o-auth-in-mern-stack-frontend-78x.vercel.app',
-            'https://your-other-frontend-url.com'
-        ];
-        if (allowedOrigins.includes(origin) || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
+app.use((req, res, next) => {
+    const allowedOrigins = [
+        'https://o-auth-in-mern-stack-frontend-78x.vercel.app',
+        'https://your-other-frontend-url.com'
+    ];
+    const origin = req.headers.origin;
+
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 
 
 
@@ -39,7 +40,7 @@ app.options('*', cors());
 
 // Define a simple route
 app.get("/", (req, res) => {
-    res.send("Hello, World!");
+    res.send("welcome in my World!");
 });
 
 // Start the server
