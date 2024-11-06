@@ -6,7 +6,22 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // CORS setup for frontend URL
-app.options('*', cors());
+app.use(cors({
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'https://o-auth-in-mern-stack-frontend-78x.vercel.app',
+            'https://your-other-frontend-url.com'
+        ];
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
+
 
 
 // Middleware to parse JSON bodies
