@@ -6,7 +6,9 @@ const port = process.env.PORT || 3000;
 const app = express();
 
 // Enable CORS for all routes and origins
-app.use(cors());
+app.use(cors({
+    origin: 'https://o-auth-in-mern-stack-evz4-rfschos6n-aqsa-abdullahs-projects.vercel.app'
+}));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
