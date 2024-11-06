@@ -30,7 +30,7 @@ function Login() {
         }
     
         try {
-            const response = await axios.post("https://o-auth-in-mern-stack-qdbhh9grm-aqsa-abdullahs-projects.vercel.app/api/user/login", { email, password });
+            const response = await axios.post("https://3dbc-39-62-147-83.ngrok-free.app/api/user/login", { email, password });
 
             const { status, message, token, error } = response.data;
 

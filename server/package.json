@@ -4,8 +4,7 @@
   "description": "Authentication using MERN Stack.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aqsa",
   "license": "ISC",
@@ -18,6 +17,7 @@
     "jsonwebtoken": "^9.0.2",
     "mjml": "^4.15.3",
     "mongoose": "^8.8.0",
+    "ngrok": "^5.0.0-beta.2",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.7"
   }
