@@ -5,6 +5,7 @@ import { handleError, handleSuccess } from '../utils';
 import axios from 'axios';
 
 function Login() {
+    const url = process.env.REACT_APP_WEBSITE_URL; // This will get the value from the .env file
 
     const [loginInfo, setLoginInfo] = useState({
         email: '',
@@ -30,16 +31,15 @@ function Login() {
         }
     
         try {
-            const response = await axios.post("http://localhost:8000/api/user/login", { email, password });
-            console.log("Response data:", response.data);  // Debugging line
-    
+            // Use the URL from the .env file
+            const response = await axios.post("https://o-auth-in-mern-stack-9rwm.vercel.app/api/user/login", { email, password });
+
             const { status, message, token, error } = response.data;
-    
-            // Check for success based on status
+
             if (status === 'success') {
-                console.log('Token:', token);  // Debugging line
+                console.log('Token:', token);
                 handleSuccess(message);
-                localStorage.setItem('token', token);  // Save token
+                localStorage.setItem('token', token);  // Save token to localStorage
                 setTimeout(() => {
                     navigate('/home');
                 }, 1000);
@@ -49,11 +49,23 @@ function Login() {
                 handleError(message);
             }
         } catch (err) {
-            handleError(err.message || 'Failed to log in');
+            // Handle different error scenarios
+            if (err.response) {
+                // Server responded with an error status
+                if (err.response.status === 404) {
+                    handleError('API endpoint not found (404). Please check the URL.');
+                } else {
+                    handleError(err.response.data.message || 'An error occurred');
+                }
+            } else if (err.request) {
+                // No response was received
+                handleError('No response from server. Please check your network or server status.');
+            } else {
+                // Any other errors during request setup
+                handleError('Failed to log in');
+            }
         }
     };
-    
-    
 
     return (
         <div className='container'>
@@ -90,3 +102,7 @@ function Login() {
 }
 
 export default Login;
+
+
+
+
