@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 require("dotenv").config();
 
 const port = process.env.PORT || 3000;
@@ -22,8 +21,14 @@ app.use((req, res, next) => {
     next();
 });
 
-
-
+// Explicitly handle OPTIONS requests
+app.options('/api/user/*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.sendStatus(200);
+});
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -35,15 +40,13 @@ require('./db/connection');
 const userRoutes = require('./routes/users');
 app.use('/api/user', userRoutes);
 
-// Preflight request handling (for CORS)
-app.options('*', cors());
-
 // Define a simple route
 app.get("/", (req, res) => {
-    res.send("welcome in my World!");
+    res.send("Welcome to my World!");
 });
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
